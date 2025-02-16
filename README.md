@@ -1,4 +1,4 @@
-# 🚀 Python Code Reviewe
+# 🚀 Python Code Reviewer
 
 A **Streamlit-based web application** that uses **Google Gemini AI** to review Python code, identify errors, suggest improvements, and rate the code.
 
