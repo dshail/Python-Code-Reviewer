@@ -17,8 +17,8 @@ system_prompt = """You are an advanced Python code reviewer. Your task is to:
 - Categorize issues as Syntax, Logic, or Performance-related.
 - Suggest improvements or optimizations.
 - Provide an overall rating (out of 5) based on code quality.
-- Output a corrected version of the code with improvements.
-- Output the response in a structured format."""
+- Generate a corrected version of the code with improvements applied.
+- Output responses in a structured format with 'Improvements:', 'Rating:', and 'Corrected Code:' sections."""
 
 # Initialize Gemini AI
 gemini = genai.GenerativeModel(
@@ -48,24 +48,24 @@ if st.button("🔍 Review Code"):
     else:
         with st.spinner("🔎 Analyzing your code..."):
             response = gemini.generate_content(user_prompt)
-        
+
         # Display AI Review
         st.subheader("✅ AI Review:")
         st.write(response.text)
 
-        # Extract rating if available
+        # Extract and display rating
         if "Rating:" in response.text:
             rating = response.text.split("Rating:")[-1].strip().split("\n")[0]
             st.subheader(f"⭐ Code Quality Rating: {rating}/5")
 
-        # Suggested improvements
-        if "Suggested Improvements:" in response.text:
+        # Display suggested improvements
+        if "Improvements:" in response.text:
             st.subheader("💡 Suggested Improvements:")
-            suggestions = response.text.split("Suggested Improvements:")[-1].strip()
-            st.write(suggestions)
-        
-        # Extract corrected code
+            improvements = response.text.split("Improvements:")[-1].split("Corrected Code:")[0].strip()
+            st.write(improvements)
+
+        # Display corrected code in a code block
         if "Corrected Code:" in response.text:
-            st.subheader("🔧 Corrected Code:")
+            st.subheader("✅ Corrected Code:")
             corrected_code = response.text.split("Corrected Code:")[-1].strip()
-            st.code(corrected_code, language='python')
+            st.code(corrected_code, language="python")
